@@ -3,6 +3,7 @@ package com.example.graduationproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,10 +14,16 @@ import android.widget.ImageView;
 
 public class Search extends AppCompatActivity {
 
+    MainActivity main;
     ImageView iv_search;
     FrameLayout frameLayout;
     Frag_search frag_search;
     Frag_search_result frag_search_result;
+
+    public Search(){
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

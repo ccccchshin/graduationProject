@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import java.io.File;
+
 public class Frag_search extends Fragment {
 
     MainActivity main;
@@ -45,6 +47,11 @@ public class Frag_search extends Fragment {
         fra_bt_pic = v.findViewById(R.id.fra_bt_picture);
 
         iv = v.findViewById(R.id.iv_fra_search);
+
+
+
+//        iv.setImageURI(search.main.aa);
+//        Log.v("0912", main.aa.toString());
 
         fra_bt_pho.setOnClickListener(new View.OnClickListener() {
             @Override

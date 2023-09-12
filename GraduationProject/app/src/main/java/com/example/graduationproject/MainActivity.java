@@ -8,6 +8,7 @@ import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ import androidx.core.content.FileProvider;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -51,6 +53,10 @@ public class MainActivity extends AppCompatActivity {
     ImageView displayImg;
     String currentPhotoPath;
 
+    Search search;
+
+    Uri aa;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         displayImg = findViewById(R.id.img);
 
+        search = new Search();
 
         // 相機
         bt_pho.setOnClickListener(new View.OnClickListener() {
@@ -165,6 +172,10 @@ public class MainActivity extends AppCompatActivity {
                 Uri contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
+
+                Intent it = new Intent(this, Search.class);
+                startActivity(it);
+
             }
         }
 
@@ -192,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
         String imageFileName = "JPEG_" + timeStamp + "_";
 //        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-        File dir = getExternalMediaDirs()[0];
+//        File dir = getExternalMediaDirs()[0];
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -206,7 +217,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void dispatchTakePictureIntent() {
-//        Log.v("Hello12323","Hello");
+
         Log.v("Test0817","Yes");
         Intent takePictureIntent = new Intent();
         takePictureIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -215,79 +226,51 @@ public class MainActivity extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
 
-            File photoFile = null;
+            File photoFile;
+            photoFile = null;
             try {
+
                 photoFile = createImageFile();
+                Log.v("where",photoFile.toString());
+
             } catch (IOException ex) {
                 Log.e("error",  ex.toString());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-//                Uri photoURI = FileProvider.getUriForFile(this,
-//                        "com.example.graduationproject.CameraEx",
-//                        photoFile);
 
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoFile.toURI());
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.graduationproject.CameraEx", photoFile);
 
-//                try{
-//                    Intent intent = new Intent();
-//                    intent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
-////                    startActivity(intent);
-                    startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
-//                    newLauncher.launch(intent);
-//                }catch (Exception e){
-//                    e.printStackTrace();
+                aa = photoURI;
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
+
+//                Android/data/com.example.graduationproject/files/Pictures
+
+            }
+        }
+
+    }
+
+
+
+//    ActivityResultLauncher<Intent> newLauncher = registerForActivityResult(
+//            new ActivityResultContracts.StartActivityForResult(),
+//            new ActivityResultCallback<ActivityResult>() {
+//                @Override
+//                public void onActivityResult(ActivityResult result) {
+//                    if (result.getData() != null && result.getResultCode() == RESULT_OK) {
+//                        Intent data = result.getData();
+////                        ImageView imageHigh = findViewById(R.id.img);
+//                        Bitmap image = (Bitmap) data.getExtras().get("data");
+//                        displayImg.setImageBitmap(image);
+//
+//                    }else{
+//
+//                    }
 //                }
-
-            }
-        }
-
-    }
-
-    ActivityResultLauncher<Intent> newLauncher = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            new ActivityResultCallback<ActivityResult>() {
-                @Override
-                public void onActivityResult(ActivityResult result) {
-                    if (result.getData() != null && result.getResultCode() == RESULT_OK) {
-                        Intent data = result.getData();
-//                        ImageView imageHigh = findViewById(R.id.img);
-                        Bitmap image = (Bitmap) data.getExtras().get("data");
-                        displayImg.setImageBitmap(image);
-
-                    }else{
-
-                    }
-                }
-            }
-    );
-
-    public void saveImage(Bitmap imageBitmap){
-
-        FileOutputStream fos = null;
-
-        try {
-            ContextWrapper cw = new ContextWrapper(getApplicationContext());
-            // path to /data/data/yourapp/app_data/imageDir
-            File directory = cw.getDir("ImageDir", Context.MODE_PRIVATE);
-            // Create imageDir
-            File my_path = new File(directory, "newFile.png");
-            Log.v("CCLo", my_path.toString());
-
-            fos = new FileOutputStream(my_path);
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            imageBitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                fos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-    }
-
+//            }
+//    );
 
 }
