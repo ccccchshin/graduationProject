@@ -2,6 +2,9 @@ package com.example.graduationproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -23,6 +26,8 @@ public class Frag_search extends Fragment {
     Search search;
     Button fra_bt_pho, fra_bt_pic;
     ImageView iv;
+
+
 
     public Frag_search() {
         // Required empty public constructor
@@ -47,11 +52,23 @@ public class Frag_search extends Fragment {
         fra_bt_pic = v.findViewById(R.id.fra_bt_picture);
 
         iv = v.findViewById(R.id.iv_fra_search);
+        String str = search.main.currentPhotoPath;
+        Uri temppath = Uri.parse(""+str);
+        if(search.main.aa == null){
+            Log.v("hello0914","hello null");
+        }else{
+            Log.v("hello0914","hello yes");
+        }
+        iv.setImageURI(search.main.aa);
 
 
+        Log.v("sss",  "" +str);
+        Log.v("sss", "3ok");
+//        main = new MainActivity();
 
-//        iv.setImageURI(search.main.aa);
-//        Log.v("0912", main.aa.toString());
+//        Log.v("0914321", search.string);
+//        iv.setImageURI(main.aa);
+//        Log.v("0914", search.main.aa.toString());
 
         fra_bt_pho.setOnClickListener(new View.OnClickListener() {
             @Override

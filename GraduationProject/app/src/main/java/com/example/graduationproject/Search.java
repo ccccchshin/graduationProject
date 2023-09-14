@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,9 @@ public class Search extends AppCompatActivity {
     public Search(){
 
     }
+    public Search(Context c_){
+        main = (MainActivity) c_;
+    }
 
 
     @Override
@@ -38,9 +42,13 @@ public class Search extends AppCompatActivity {
 
         frag_search = new Frag_search(this);
         frag_search_result = new Frag_search_result(this);
+        main = new MainActivity();
 
+        Log.v("sss", "2ok");
+        Log.v("sss", main.answer);
         load();
 
+//        Log.v("0914test", main.currentPhotoPath);
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

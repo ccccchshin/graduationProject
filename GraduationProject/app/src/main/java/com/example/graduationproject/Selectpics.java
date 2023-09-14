@@ -23,7 +23,7 @@ public class Selectpics extends AppCompatActivity {
         bt_cancel = findViewById(R.id.bt_cancel);
         bt_select = findViewById(R.id.bt_select);
 
-        search = new Search();
+//        search = new Search();
 
 
         bt_cancel.setOnClickListener(new View.OnClickListener() {

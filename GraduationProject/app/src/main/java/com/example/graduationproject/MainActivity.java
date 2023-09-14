@@ -50,10 +50,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     Button bt_pho, bt_pic;
-    ImageView displayImg;
+    ImageView displayImg,iv;
     String currentPhotoPath;
 
     Search search;
+    Frag_search frag_search;
+
+    String answer = "yesyes";
 
     Uri aa;
 
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
         displayImg = findViewById(R.id.img);
 
-        search = new Search();
+        search = new Search(this);
 
         // 相機
         bt_pho.setOnClickListener(new View.OnClickListener() {
@@ -93,23 +96,25 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void askCameraPermissions() {
+//    private void askCameraPermissions() {
+//
+//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
+//
+//            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
+//        }else {
+//            dispatchTakePictureIntent();
+//        }
+//
+//    }
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-
-            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
-        }else {
-            dispatchTakePictureIntent();
-        }
-
-    }
-
+    //存取權安全性驗證
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
     private void verifyPermissions(){
 
         String[] permissions = {
                 Manifest.permission.READ_MEDIA_IMAGES,
                 Manifest.permission.CAMERA};
+
          if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                 permissions[0]) == PackageManager.PERMISSION_GRANTED
                 && ContextCompat.checkSelfPermission(this.getApplicationContext(),
@@ -120,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
          }else{
              Log.v("ANSWER","what was that = "+ContextCompat.checkSelfPermission(this.getApplicationContext(),
                      permissions[0])+"!!!!");
-//             Log.v("see","start = "+permissions[0].toString()+"+++++");
             if(ContextCompat.checkSelfPermission(this.getApplicationContext(),
                     permissions[0]) == PackageManager.PERMISSION_GRANTED){
                 Log.v("answer0","yes");
@@ -134,23 +138,19 @@ public class MainActivity extends AppCompatActivity {
                 Log.v("answer1","no");
             }
 
-            Log.v("testvalue","");
             ActivityCompat.requestPermissions(this,
                     permissions,
                     CAMERA_PERM_CODE);
-            Log.v("end","????");
         }
-        Log.v("end111","????");
     }
 
+    //驗證
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERM_CODE) {
 
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // 0 = no 1 = yes
-//                Log.v("123123",Integer.toString(grantResults[0]));
                 dispatchTakePictureIntent();
             } else {
                 Toast.makeText(this, "Camera Permission is Required to Use camera.", Toast.LENGTH_SHORT).show();
@@ -158,6 +158,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    // 開啟相機之後的動作
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -165,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == CAMERA_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 File f = new File(currentPhotoPath);
+
                 displayImg.setImageURI(Uri.fromFile(f));
                 Log.d("tag", "ABsolute Url of Image is " + Uri.fromFile(f));
 
@@ -172,13 +174,13 @@ public class MainActivity extends AppCompatActivity {
                 Uri contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
+                aa = contentUri;
 
-                Intent it = new Intent(this, Search.class);
+                Intent it = new Intent(MainActivity.this, Search.class);
                 startActivity(it);
 
             }
         }
-
         // Gallery
         if(requestCode == GALLERY_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
@@ -188,7 +190,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
                 displayImg.setImageURI(contentUri);
             }
-
         }
     }
     private String getFileExt(Uri contentUri) {
@@ -216,9 +217,9 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
+    //開啟相機前的前置處理
     private void dispatchTakePictureIntent() {
 
-        Log.v("Test0817","Yes");
         Intent takePictureIntent = new Intent();
         takePictureIntent.setAction(MediaStore.ACTION_IMAGE_CAPTURE);
 
@@ -229,9 +230,7 @@ public class MainActivity extends AppCompatActivity {
             File photoFile;
             photoFile = null;
             try {
-
                 photoFile = createImageFile();
-                Log.v("where",photoFile.toString());
 
             } catch (IOException ex) {
                 Log.e("error",  ex.toString());
@@ -241,11 +240,10 @@ public class MainActivity extends AppCompatActivity {
 
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.graduationproject.CameraEx", photoFile);
-
-                aa = photoURI;
+//                aa = photoURI;
+                Log.v("sss", "ok" );
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
-
 //                Android/data/com.example.graduationproject/files/Pictures
 
             }
