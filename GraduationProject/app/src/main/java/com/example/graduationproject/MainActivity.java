@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -50,16 +51,14 @@ public class MainActivity extends AppCompatActivity {
 
 
     Button bt_pho, bt_pic;
-    ImageView displayImg,iv;
+    ImageView displayImg;
     String currentPhotoPath;
 
     Search search;
-    Frag_search frag_search;
 
     String answer = "yesyes";
 
-    Uri aa;
-
+    File photoFile, f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                askCameraPermissions();
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if(!Environment.isExternalStorageManager()){
+                        Intent getPermission = new Intent();
+                        getPermission.setAction(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION);
+                        startActivity(getPermission);
+                    }
                     verifyPermissions();
                 }
             }
@@ -95,17 +99,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-//    private void askCameraPermissions() {
-//
-//        if(ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
-//
-//            ActivityCompat.requestPermissions(this,new String[] {Manifest.permission.CAMERA}, CAMERA_PERM_CODE);
-//        }else {
-//            dispatchTakePictureIntent();
-//        }
-//
-//    }
 
     //存取權安全性驗證
     @RequiresApi(api = Build.VERSION_CODES.TIRAMISU)
@@ -165,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
         // Capture
         if(requestCode == CAMERA_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
-                File f = new File(currentPhotoPath);
+                f = new File(currentPhotoPath);
 
                 displayImg.setImageURI(Uri.fromFile(f));
                 Log.d("tag", "ABsolute Url of Image is " + Uri.fromFile(f));
@@ -174,9 +167,9 @@ public class MainActivity extends AppCompatActivity {
                 Uri contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
-                aa = contentUri;
 
                 Intent it = new Intent(MainActivity.this, Search.class);
+                it.putExtra("path", currentPhotoPath);
                 startActivity(it);
 
             }
@@ -189,6 +182,10 @@ public class MainActivity extends AppCompatActivity {
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
                 displayImg.setImageURI(contentUri);
+
+                Intent it = new Intent(MainActivity.this, Search.class);
+                it.putExtra("path", contentUri.toString());
+                startActivity(it);
             }
         }
     }
@@ -227,48 +224,29 @@ public class MainActivity extends AppCompatActivity {
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
             // Create the File where the photo should go
 
-            File photoFile;
             photoFile = null;
+
             try {
                 photoFile = createImageFile();
 
             } catch (IOException ex) {
-                Log.e("error",  ex.toString());
+                Log.e("error123",  ex.toString());
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
 
                 Uri photoURI = FileProvider.getUriForFile(this,
                         "com.example.graduationproject.CameraEx", photoFile);
-//                aa = photoURI;
+
                 Log.v("sss", "ok" );
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
 //                Android/data/com.example.graduationproject/files/Pictures
-
             }
         }
 
     }
 
 
-
-//    ActivityResultLauncher<Intent> newLauncher = registerForActivityResult(
-//            new ActivityResultContracts.StartActivityForResult(),
-//            new ActivityResultCallback<ActivityResult>() {
-//                @Override
-//                public void onActivityResult(ActivityResult result) {
-//                    if (result.getData() != null && result.getResultCode() == RESULT_OK) {
-//                        Intent data = result.getData();
-////                        ImageView imageHigh = findViewById(R.id.img);
-//                        Bitmap image = (Bitmap) data.getExtras().get("data");
-//                        displayImg.setImageBitmap(image);
-//
-//                    }else{
-//
-//                    }
-//                }
-//            }
-//    );
 
 }
