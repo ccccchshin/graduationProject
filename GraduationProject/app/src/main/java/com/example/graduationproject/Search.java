@@ -7,6 +7,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.app.Activity;
@@ -19,12 +20,14 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,9 +43,12 @@ public class Search extends AppCompatActivity {
     Frag_search_result frag_search_result;
     Button se_bt_photo, se_bt_pic;
     File photoFile,f;
-    String currentPhotoPath;
+    String se_currentPhotoPath;
 
     Uri uri;
+    Uri contentUri;
+    LinearLayout ll;
+
 
     public Search(){
 
@@ -63,10 +69,9 @@ public class Search extends AppCompatActivity {
         se_bt_photo = findViewById(R.id.se_bt_photo);
         se_bt_pic = findViewById(R.id.se_bt_picture);
 
+        ll = findViewById(R.id.searchlayout);
 
         iv_search.setImageResource(R.drawable.search_icon);
-//        Bitmap myBitmap = BitmapFactory.decodeFile(main.photoFile.getAbsolutePath());
-//        iv_search.setImageBitmap(myBitmap);
 
         frag_search = new Frag_search(this);
         frag_search_result = new Frag_search_result(this);
@@ -78,20 +83,9 @@ public class Search extends AppCompatActivity {
 
         Log.v("sss", "2ok");
         Log.v("sss", main.answer);
-        if(str != null){
-            Log.v("sss", "Path = " + str);
-        }else{
-            Log.v("sss", "8181");
-        }
-        if(uri != null){
-            Log.v("sss", "Uri = " + uri);
-        }else{
-            Log.v("sss", "8181");
-        }
+
         load();
 
-
-//        Log.v("0914test", main.currentPhotoPath);
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +93,10 @@ public class Search extends AppCompatActivity {
                 FragmentTransaction t = getSupportFragmentManager().beginTransaction();
                 t.replace(R.id.frame, frag_search_result).commit();
 
+
+                se_bt_photo.setVisibility(View.GONE);
+                se_bt_pic.setVisibility(View.GONE);
+                ll.setVisibility(View.GONE);
 
             }
         });
@@ -113,31 +111,32 @@ public class Search extends AppCompatActivity {
                     Log.v("bt_pho", "can't");
                     e.printStackTrace();
                 }
+
             }
         });
         se_bt_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(gallery, GALLERY_REQUEST_CODE);
             }
         });
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         // Capture
         if(requestCode == CAMERA_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
-                f = new File(currentPhotoPath);
-//
-//                displayImg.setImageURI(Uri.fromFile(f));
-//                Log.d("tag", "ABsolute Url of Image is " + Uri.fromFile(f));
+                f = new File(se_currentPhotoPath);
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                Uri contentUri = Uri.fromFile(f);
+                contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
+                frag_search.iv.setImageURI(uri);
 
             }
         }
@@ -148,8 +147,7 @@ public class Search extends AppCompatActivity {
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
-//                displayImg.setImageURI(contentUri);
-
+                frag_search.iv.setImageURI(contentUri);
 
             }
         }
@@ -177,7 +175,7 @@ public class Search extends AppCompatActivity {
 
 
         // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
+        se_currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 
@@ -206,10 +204,17 @@ public class Search extends AppCompatActivity {
                         "com.example.graduationproject.CameraEx", photoFile);
 
                 Log.v("sss", "ok" );
+                Log.v("CCC", "photoURI:" + photoURI.toString());
+
+
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);
 //                Android/data/com.example.graduationproject/files/Pictures
             }
+            String path = photoFile.getAbsolutePath();
+            Log.v("CCC", "Path: " + path);
+            uri = Uri.parse(path);
+
         }
 
     }

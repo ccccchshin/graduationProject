@@ -60,9 +60,12 @@ public class Frag_search extends Fragment {
 //        fra_bt_pho = v.findViewById(R.id.fra_bt_photo);
 //        fra_bt_pic = v.findViewById(R.id.fra_bt_picture);
 
+
         iv = v.findViewById(R.id.iv_fra_search);
 
+
         iv.setImageURI(search.uri);
+        Log.v("imgtag", "uri:"+search.uri);
 
 //        if(search.main.f != null) {
 //            Log.v("sss", "3ok");

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,7 +46,9 @@ public class Frag_search_result extends Fragment {
         bt_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search.load();
+                search.se_bt_photo.setVisibility(View.GONE);
+                search.se_bt_pic.setVisibility(View.GONE);
+
             }
         });
         bt_home.setOnClickListener(new View.OnClickListener() {
