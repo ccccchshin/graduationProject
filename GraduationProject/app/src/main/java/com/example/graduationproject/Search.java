@@ -19,18 +19,25 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
+import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.gson.Gson;
+
 import java.io.File;
 import java.io.IOException;
+import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -44,11 +51,15 @@ public class Search extends AppCompatActivity {
     Button se_bt_photo, se_bt_pic;
     File photoFile,f;
     String se_currentPhotoPath;
-
     Uri uri;
     Uri contentUri;
     LinearLayout ll;
-
+    EditText keyword;
+    SocketClient client;
+    String json = "";
+    String inputStr = "";
+    Gson gson = new Gson();
+    Socket socket = new Socket();
 
     public Search(){
 
@@ -72,6 +83,16 @@ public class Search extends AppCompatActivity {
         ll = findViewById(R.id.searchlayout);
 
         iv_search.setImageResource(R.drawable.search_icon);
+        keyword = findViewById(R.id.keyword);
+
+
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        client = new SocketClient();
+        client.start();
+
+//        sc = new SocketClient(this);
 
         frag_search = new Frag_search(this);
         frag_search_result = new Frag_search_result(this);
@@ -81,9 +102,6 @@ public class Search extends AppCompatActivity {
         String str = it.getStringExtra("path");
         uri = Uri.parse(str);
 
-        Log.v("sss", "2ok");
-        Log.v("sss", main.answer);
-
         load();
 
         iv_search.setOnClickListener(new View.OnClickListener() {
@@ -91,12 +109,28 @@ public class Search extends AppCompatActivity {
             public void onClick(View v) {
 
                 FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-                t.replace(R.id.frame, frag_search_result).commit();
-
+                t.add(R.id.frame, frag_search_result).commit();
 
                 se_bt_photo.setVisibility(View.GONE);
                 se_bt_pic.setVisibility(View.GONE);
                 ll.setVisibility(View.GONE);
+
+//                new SocketClient().execute(keyword.getText().toString());
+//                inputMessage.getText().clear();
+
+                // socket要傳文字&圖片
+                inputStr = keyword.getText().toString();
+                json = gson.toJson(inputStr);
+                client.sendMessage(json);
+                keyword.getText().clear();
+                try {
+                    keyword.setText(socket.getInputStream().toString());
+                } catch (IOException e) {
+                    Log.v("keyword", "0924");
+                }
+//                keyword.setText();
+                // 文字 json/gson function1
+                // 圖片 串流 function2
 
             }
         });
@@ -104,11 +138,11 @@ public class Search extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Log.v("bt_pho", "this is 拍照 button");
+                Log.v("bt_pho", "this camera in search_act");
                 try{
                     dispatchTakePictureIntent();
                 }catch (Exception e){
-                    Log.v("bt_pho", "can't");
+                    Log.v("bt_pho", "can't open");
                     e.printStackTrace();
                 }
 

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ public class Frag_search_result extends Fragment {
 
     MainActivity main;
     Search search;
+    Frag_search frag_search = new Frag_search();
 
     Button bt_back, bt_home;
 
@@ -46,8 +48,17 @@ public class Frag_search_result extends Fragment {
         bt_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                search.se_bt_photo.setVisibility(View.GONE);
-                search.se_bt_pic.setVisibility(View.GONE);
+//                search.load();
+
+                FragmentManager fm = getFragmentManager();
+                FragmentTransaction ft = fm.beginTransaction();
+                ft.remove(search.frag_search_result).commit();
+
+                search.ll.setVisibility(View.VISIBLE);
+                search.se_bt_photo.setVisibility(View.VISIBLE);
+                search.se_bt_pic.setVisibility(View.VISIBLE);
+
+
 
             }
         });
