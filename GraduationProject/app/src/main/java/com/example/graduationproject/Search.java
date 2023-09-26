@@ -55,7 +55,7 @@ public class Search extends AppCompatActivity {
     Uri contentUri;
     LinearLayout ll;
     EditText keyword;
-    SocketClient client;
+    SocketClient client, client2;
     String json = "";
     String inputStr = "";
     Gson gson = new Gson();
@@ -92,6 +92,9 @@ public class Search extends AppCompatActivity {
         client = new SocketClient();
         client.start();
 
+        client2 = new SocketClient();
+        client2.start();
+
 //        sc = new SocketClient(this);
 
         frag_search = new Frag_search(this);
@@ -121,13 +124,16 @@ public class Search extends AppCompatActivity {
                 // socket要傳文字&圖片
                 inputStr = keyword.getText().toString();
                 json = gson.toJson(inputStr);
+                Log.v("CCC", json.toString());
                 client.sendMessage(json);
                 keyword.getText().clear();
-                try {
-                    keyword.setText(socket.getInputStream().toString());
-                } catch (IOException e) {
-                    Log.v("keyword", "0924");
-                }
+//                client2.sendImage(new File(uri.getPath()));
+                client2.sendImage();
+//                try {
+//                    keyword.setText(socket.getInputStream().toString());
+//                } catch (IOException e) {
+//                    Log.v("keyword", "0924");
+//                }
 //                keyword.setText();
                 // 文字 json/gson function1
                 // 圖片 串流 function2
@@ -181,7 +187,8 @@ public class Search extends AppCompatActivity {
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
-                frag_search.iv.setImageURI(contentUri);
+                uri = contentUri;
+                frag_search.iv.setImageURI(uri);
 
             }
         }

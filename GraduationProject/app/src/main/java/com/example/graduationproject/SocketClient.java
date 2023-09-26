@@ -1,6 +1,7 @@
 package com.example.graduationproject;
 
 import android.content.Context;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,10 +13,15 @@ import com.google.gson.Gson;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+
 // AsyncTask<String, Void, Void>
 public class SocketClient extends Thread {
 
@@ -24,7 +30,16 @@ public class SocketClient extends Thread {
     Socket socket;
     DataInputStream dis;
     DataOutputStream dos;
-//    Gson gson = new Gson();
+    FileInputStream fis;
+    FileOutputStream fos;
+
+    ObjectInputStream ois;
+
+    byte[] bytes;
+
+
+    File file;
+    Uri u ;
 
     MyHandler myHandler;
 
@@ -33,8 +48,9 @@ public class SocketClient extends Thread {
 
     public SocketClient() {
     }
-    public SocketClient(Search search) {
-        this.search = (Search) search;
+
+    public SocketClient(Search s) {
+        search = (Search) s;
     }
 
 //    @Override
@@ -70,30 +86,44 @@ public class SocketClient extends Thread {
 
         myHandler = new MyHandler();
 
+
+        file = new File("file:///storage/emulated/0/Pictures/JPEG_20230926_212305_1951428212526344974.jpg");
+
         try {
             socket = new Socket(host, port);
             if (socket != null) {
                 dos = new DataOutputStream(socket.getOutputStream());
                 dis = new DataInputStream(socket.getInputStream());
+                fos = new FileOutputStream(file);
+                fis = new FileInputStream(file);
+                ois = new ObjectInputStream(socket.getInputStream());
+                bytes = (byte[]) ois.readObject();
             } else {
 
-            }while (true) {
-                search.json = dis.readUTF();
+            }
+            while (true) {
+                String x = dis.readUTF();
+                Log.v("CCC", "msg from socket: " + x);
 //                SocketClient sc = search.gson.fromJson(search.json, SocketClient.class);
-                Bundle bundle = new Bundle();
-                bundle.putString("str", search.json);
-                Message msg = new Message();
-                msg.setData(bundle);
-                myHandler.sendMessage(msg);
+//                Bundle bundle = new Bundle();
+//                bundle.putString("str", search.json);
+//                Message msg = new Message();
+//                msg.setData(bundle);
+//                myHandler.sendMessage(msg);
+//                File f = fis.rea
             }
         } catch (IOException e) {
 
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         } finally {
             try {
                 dos.close();
                 dis.close();
+                fos.close();
+                fis.close();
                 socket.close();
-            } catch (IOException ioe){
+            } catch (IOException ioe) {
 
             }
         }
@@ -109,4 +139,15 @@ public class SocketClient extends Thread {
             }
         }
     }
+
+    public void sendImage(){
+        if (fos != null){
+            try {
+                fos.write(bytes);
+            }catch (Exception e){
+                Log.v("CCC", "Send image fail!");
+            }
+        }
+    }
+
 }
