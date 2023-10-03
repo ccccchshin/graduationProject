@@ -1,6 +1,8 @@
 package com.example.graduationproject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -37,11 +40,10 @@ public class SocketClient extends Thread {
 
     byte[] bytes;
 
-
     File file;
-    Uri u ;
 
     MyHandler myHandler;
+
 
     String host = "120.110.113.213";
     int port = 12345;
@@ -53,30 +55,6 @@ public class SocketClient extends Thread {
         search = (Search) s;
     }
 
-//    @Override
-//    protected Void doInBackground(String... params) {
-//
-//        try {
-//            try {
-//                Socket socket = new Socket("120.110.113.213",12345);
-//                PrintWriter outToServer = new PrintWriter(
-//                        new OutputStreamWriter(
-//                                socket.getOutputStream()));
-//                outToServer.print(params[0]);
-//                outToServer.flush();
-//
-//
-//            }
-//            catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        catch (Exception e) {
-//            this.exception = e;
-//            return null;
-//        }
-//        return null;
-//    }
 
     @Override
     public void run() {
@@ -88,6 +66,8 @@ public class SocketClient extends Thread {
 
 
         file = new File("file:///storage/emulated/0/Pictures/JPEG_20230926_212305_1951428212526344974.jpg");
+//        file = new File("/storage/emulated/0/Pictures/JPEG_20230926_212305_1951428212526344974.jpg");
+//        file = new File("\storage\emulated\0\Pictures\JPEG_20230926_212305_1951428212526344974.jpg");
 
         try {
             socket = new Socket(host, port);
@@ -98,6 +78,7 @@ public class SocketClient extends Thread {
                 fis = new FileInputStream(file);
                 ois = new ObjectInputStream(socket.getInputStream());
                 bytes = (byte[]) ois.readObject();
+//                ByteArrayOutputStream()
             } else {
 
             }
@@ -139,15 +120,44 @@ public class SocketClient extends Thread {
             }
         }
     }
+    public void sendImgMsg(DataOutputStream out) throws IOException {
+        Log.i("sendImg", "len: "+"1");
+        Bitmap bitmap = BitmapFactory.decodeStream(fis);
+//        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(fis), R.drawable.search_icon);
+
+        Log.i("sendImg", "len: "+"2");
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bout);
+        Log.i("sendImg", "len: "+"3");
+
+        long len = bout.size();
+        Log.i("sendImg", "len: "+"4");
+        out.write(bout.toByteArray());
+    }
 
     public void sendImage(){
+        byte[] sendbytes = new byte[1024];
+        int length = 0;
         if (fos != null){
             try {
-                fos.write(bytes);
+                while ((length = fis.read(sendbytes, 0, sendbytes.length)) > 0){
+                    dos.write(sendbytes, 0, length);
+                    dos.flush();
+                }
             }catch (Exception e){
                 Log.v("CCC", "Send image fail!");
             }
         }
+
+
+//        if (fos != null){
+//            try {
+//                fos.write(bytes);
+//            }catch (Exception e){
+//                Log.v("CCC", "Send image fail!");
+//            }
+//        }
     }
 
 }

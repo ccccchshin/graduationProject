@@ -35,6 +35,7 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.net.Socket;
@@ -128,7 +129,13 @@ public class Search extends AppCompatActivity {
                 client.sendMessage(json);
                 keyword.getText().clear();
 //                client2.sendImage(new File(uri.getPath()));
-                client2.sendImage();
+//                client2.sendImage();
+                try {
+                    Log.v("yyy", "hello123");
+                    client2.sendImgMsg(client2.dos);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
 //                try {
 //                    keyword.setText(socket.getInputStream().toString());
 //                } catch (IOException e) {
