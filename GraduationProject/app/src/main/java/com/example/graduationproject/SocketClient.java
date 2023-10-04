@@ -65,9 +65,10 @@ public class SocketClient extends Thread {
         myHandler = new MyHandler();
 
 
-        file = new File("file:///storage/emulated/0/Pictures/JPEG_20230926_212305_1951428212526344974.jpg");
-//        file = new File("/storage/emulated/0/Pictures/JPEG_20230926_212305_1951428212526344974.jpg");
+//        file = new File("file:///storage/emulated/0/Pictures/JPEG_20230926_212305_1951428212526344974.jpg");
+        file = new File("/storage/emulated/0/Pictures/JPEG_20230926_144651_6448690246035440926.jpg");
 //        file = new File("\storage\emulated\0\Pictures\JPEG_20230926_212305_1951428212526344974.jpg");
+
 
         try {
             socket = new Socket(host, port);
@@ -84,14 +85,12 @@ public class SocketClient extends Thread {
             }
             while (true) {
                 String x = dis.readUTF();
+                if (x.equals("OK")) {
+                    Log.v("CCC", "response from python server");
+                    FileTransfer ft = new FileTransfer();
+                    ft.start();
+                }
                 Log.v("CCC", "msg from socket: " + x);
-//                SocketClient sc = search.gson.fromJson(search.json, SocketClient.class);
-//                Bundle bundle = new Bundle();
-//                bundle.putString("str", search.json);
-//                Message msg = new Message();
-//                msg.setData(bundle);
-//                myHandler.sendMessage(msg);
-//                File f = fis.rea
             }
         } catch (IOException e) {
 
@@ -128,8 +127,8 @@ public class SocketClient extends Thread {
         Log.i("sendImg", "len: "+"2");
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bout);
-        Log.i("sendImg", "len: "+"3");
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bout);
+//        Log.i("sendImg", "len: "+"3");
 
         long len = bout.size();
         Log.i("sendImg", "len: "+"4");

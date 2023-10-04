@@ -35,6 +35,8 @@ import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
@@ -123,19 +125,29 @@ public class Search extends AppCompatActivity {
 //                inputMessage.getText().clear();
 
                 // socket要傳文字&圖片
+                JSONObject json = new JSONObject();
                 inputStr = keyword.getText().toString();
-                json = gson.toJson(inputStr);
+                try {
+                    json.put("search", inputStr);
+                    json.put("file", "test.jpg");
+                    f.length();
+                    Log.v("CCC", "len: " + f.length());
+                    Log.v("CCC", "json:" + json.toString());
+                } catch (Exception e) {
+
+                }
                 Log.v("CCC", json.toString());
-                client.sendMessage(json);
+                client.sendMessage(json.toString());
+
                 keyword.getText().clear();
 //                client2.sendImage(new File(uri.getPath()));
 //                client2.sendImage();
-                try {
-                    Log.v("yyy", "hello123");
-                    client2.sendImgMsg(client2.dos);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+//                try {
+//                    Log.v("yyy", "hello123");
+//                    client2.sendImgMsg(client2.dos);
+//                } catch (IOException e) {
+//                    throw new RuntimeException(e);
+//                }
 //                try {
 //                    keyword.setText(socket.getInputStream().toString());
 //                } catch (IOException e) {
