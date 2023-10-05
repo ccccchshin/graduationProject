@@ -71,20 +71,28 @@ public class SocketClient extends Thread {
 
 
         try {
+            Log.v("CCC", "1005test22222");
             socket = new Socket(host, port);
+            Log.v("CCC", "1005test123456");
             if (socket != null) {
                 dos = new DataOutputStream(socket.getOutputStream());
                 dis = new DataInputStream(socket.getInputStream());
                 fos = new FileOutputStream(file);
                 fis = new FileInputStream(file);
-                ois = new ObjectInputStream(socket.getInputStream());
-                bytes = (byte[]) ois.readObject();
+//                ois = new ObjectInputStream(socket.getInputStream());
+//                bytes = (byte[]) ois.readObject();
 //                ByteArrayOutputStream()
             } else {
-
+                Log.v("CCC", "1005test");
             }
             while (true) {
-                String x = dis.readUTF();
+                String x = "";
+                try {
+                    x = dis.readUTF();
+                }catch (Exception e){
+                    Log.v("CCC", "can't get");
+                }
+                Log.v("CCC", "msg from socket: " + x);
                 if (x.equals("OK")) {
                     Log.v("CCC", "response from python server");
                     FileTransfer ft = new FileTransfer();
@@ -94,9 +102,10 @@ public class SocketClient extends Thread {
             }
         } catch (IOException e) {
 
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
-        } finally {
+//        } catch (ClassNotFoundException e) {
+//            throw new RuntimeException(e);
+        }
+        finally {
             try {
                 dos.close();
                 dis.close();

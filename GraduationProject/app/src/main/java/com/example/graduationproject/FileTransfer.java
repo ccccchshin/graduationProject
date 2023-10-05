@@ -32,6 +32,7 @@ public class FileTransfer extends Thread {
         super.run();
         try {
             socket = new Socket(host, port);
+            Log.v("YYY","Hello i am socket");
             if (socket != null) {
                 dos = new DataOutputStream(socket.getOutputStream());
                 dis = new DataInputStream(socket.getInputStream());
@@ -44,6 +45,8 @@ public class FileTransfer extends Thread {
                 //Read File Contents into contents array
                 long fileLength = file.length();
                 byte[] buffer = new byte[(int) fileLength];
+                Log.v("YYY","Hello");
+                Log.v("YYY",Integer.toString(buffer.length));
                 bis.read(buffer, 0, buffer.length);
                 os.write(buffer, 0, buffer.length);
                 System.out.print("Sending file complete!");

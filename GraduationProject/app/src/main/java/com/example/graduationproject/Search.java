@@ -125,19 +125,21 @@ public class Search extends AppCompatActivity {
 //                inputMessage.getText().clear();
 
                 // socket要傳文字&圖片
-                JSONObject json = new JSONObject();
+//                JSONObject json = new JSONObject();
                 inputStr = keyword.getText().toString();
-                try {
-                    json.put("search", inputStr);
-                    json.put("file", "test.jpg");
-                    f.length();
-                    Log.v("CCC", "len: " + f.length());
-                    Log.v("CCC", "json:" + json.toString());
-                } catch (Exception e) {
-
-                }
+                json = gson.toJson(inputStr);
+//                try {
+//                    json.put("search", inputStr);
+//                    json.put("file", "test.jpg");
+////                    int temp = Math.toIntExact(f.length());
+////                    String temp_string = Integer.toString(temp);
+////                    Log.v("sss", "len: " +temp_string);
+//                    Log.v("CCC", "json:" + json.toString());
+//                } catch (Exception e) {
+//
+//                }
                 Log.v("CCC", json.toString());
-                client.sendMessage(json.toString());
+                client.sendMessage(json);
 
                 keyword.getText().clear();
 //                client2.sendImage(new File(uri.getPath()));
