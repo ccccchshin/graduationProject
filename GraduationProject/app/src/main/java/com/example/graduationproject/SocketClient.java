@@ -86,19 +86,21 @@ public class SocketClient extends Thread {
                 Log.v("CCC", "1005test");
             }
             while (true) {
-                String x = "";
-                try {
-                    x = dis.readUTF();
-                }catch (Exception e){
-                    Log.v("CCC", "can't get");
-                }
+                String x = dis.readUTF();
+//                try {
+//                    Log.v("CCC", "1007");
+//                    x = dis.readUTF();
+//                    Log.v("CCC", "10088");
+//                }catch (Exception e){
+//                    Log.v("CCC", "can't get");
+//                }
                 Log.v("CCC", "msg from socket: " + x);
-                if (x.equals("OK")) {
+//                if (x.equals("OK")) {
+                if (x != null) {
                     Log.v("CCC", "response from python server");
                     FileTransfer ft = new FileTransfer();
                     ft.start();
                 }
-                Log.v("CCC", "msg from socket: " + x);
             }
         } catch (IOException e) {
 

@@ -1,5 +1,7 @@
 package com.example.graduationproject;
 
+import android.database.Cursor;
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.BufferedInputStream;
@@ -12,6 +14,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 public class FileTransfer extends Thread {
 
@@ -23,7 +26,7 @@ public class FileTransfer extends Thread {
     Socket socket;
     String host = "120.110.113.213";
     int port = 12350;
-    File file = new File("/storage/emulated/0/Pictures/JPEG_20230926_144651_6448690246035440926.jpg");
+    File file = new File("./storage/emulated/0/Pictures/JPEG_20231007_131700_2554008183218083671.jpg");
     File infile = new File("/storage/emulated/0/Pictures/Output.jpg");
 
     //
@@ -32,7 +35,7 @@ public class FileTransfer extends Thread {
         super.run();
         try {
             socket = new Socket(host, port);
-            Log.v("YYY","Hello i am socket");
+            Log.v("YYY","Here is FileTransfer");
             if (socket != null) {
                 dos = new DataOutputStream(socket.getOutputStream());
                 dis = new DataInputStream(socket.getInputStream());
@@ -43,13 +46,31 @@ public class FileTransfer extends Thread {
                 //Get socket's output stream
                 OutputStream os = socket.getOutputStream();
                 //Read File Contents into contents array
-                long fileLength = file.length();
-                byte[] buffer = new byte[(int) fileLength];
+
+
+                Long fileLength = file.length();
+                String str = fileLength.toString();
+                int final_fileLength = Integer.parseInt(str);
+
+                Log.v("YYY", ""+final_fileLength);
+
+//                byte[] b = new byte[final_fileLength];
+                ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+                if(buffer == null)
+                    Log.v("YYY", "QAQ");
+                else
+                    Log.v("YYY", "YES");
+                buffer.put(buffer.array(),0, buffer.array().length);
+                Log.v("YYY", ""+buffer.array().length);
+                buffer.flip();
+
+                Uri uri = Uri.fromFile(file);
+//                Cursor returnCursor = getContentResolver().query(uri, null, null, null, null);
                 Log.v("YYY","Hello");
-                Log.v("YYY",Integer.toString(buffer.length));
-                bis.read(buffer, 0, buffer.length);
-                os.write(buffer, 0, buffer.length);
-                System.out.print("Sending file complete!");
+//                Log.v("YYY",Integer.toString(buffer.length));
+
+                bis.read(buffer.array(), 0, buffer.array().length);
+                os.write(buffer.array(), 0, buffer.array().length);
 
                 os.flush();
                 //File transfer done. Close the sock

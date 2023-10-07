@@ -62,6 +62,7 @@ public class Search extends AppCompatActivity {
     String json = "";
     String inputStr = "";
     Gson gson = new Gson();
+    Long filesize;
     Socket socket = new Socket();
 
     public Search(){
@@ -106,6 +107,7 @@ public class Search extends AppCompatActivity {
 
         Intent it = getIntent();
         String str = it.getStringExtra("path");
+        filesize = it.getLongExtra("size", 0);
         uri = Uri.parse(str);
 
         load();
@@ -120,6 +122,13 @@ public class Search extends AppCompatActivity {
                 se_bt_photo.setVisibility(View.GONE);
                 se_bt_pic.setVisibility(View.GONE);
                 ll.setVisibility(View.GONE);
+
+                try{
+                    Log.v("CCC", Long.toString(filesize));
+                }catch (Exception e){
+                    Log.v("CCC", "not find flength");
+                }
+
 
 //                new SocketClient().execute(keyword.getText().toString());
 //                inputMessage.getText().clear();
@@ -138,12 +147,11 @@ public class Search extends AppCompatActivity {
 //                } catch (Exception e) {
 //
 //                }
+
                 Log.v("CCC", json.toString());
                 client.sendMessage(json);
 
                 keyword.getText().clear();
-//                client2.sendImage(new File(uri.getPath()));
-//                client2.sendImage();
 //                try {
 //                    Log.v("yyy", "hello123");
 //                    client2.sendImgMsg(client2.dos);
@@ -184,7 +192,9 @@ public class Search extends AppCompatActivity {
         });
 
     }
-
+//Long l;
+//String str = l.toString();
+//int finalsize = Integer.parseInt(str);
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -192,12 +202,15 @@ public class Search extends AppCompatActivity {
         if(requestCode == CAMERA_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 f = new File(se_currentPhotoPath);
+                filesize = f.length();
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
+
                 frag_search.iv.setImageURI(uri);
+
 
             }
         }
@@ -209,6 +222,8 @@ public class Search extends AppCompatActivity {
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
                 uri = contentUri;
+                f = new File(uri.toString());
+                filesize = f.length();
                 frag_search.iv.setImageURI(uri);
 
             }

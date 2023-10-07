@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
     String answer = "yesyes";
 
     File photoFile, f;
+    Long filelength;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,9 +168,11 @@ public class MainActivity extends AppCompatActivity {
                 Uri contentUri = Uri.fromFile(f);
                 mediaScanIntent.setData(contentUri);
                 this.sendBroadcast(mediaScanIntent);
+                filelength = f.length();
 
                 Intent it = new Intent(MainActivity.this, Search.class);
                 it.putExtra("path", currentPhotoPath);
+                it.putExtra("size", filelength);
                 startActivity(it);
 
             }
