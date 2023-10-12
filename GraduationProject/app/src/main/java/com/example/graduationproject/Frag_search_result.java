@@ -2,6 +2,7 @@ package com.example.graduationproject;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+
+import java.io.File;
 
 
 public class Frag_search_result extends Fragment {
@@ -21,6 +25,7 @@ public class Frag_search_result extends Fragment {
     Frag_search frag_search = new Frag_search();
 
     Button bt_back, bt_home;
+    ImageView resultImg;
 
     public Frag_search_result() {
         // Required empty public constructor
@@ -42,8 +47,7 @@ public class Frag_search_result extends Fragment {
 
         bt_back = v.findViewById(R.id.fra_bt_back);
         bt_home = v.findViewById(R.id.fra_bt_home);
-
-
+        resultImg = v.findViewById(R.id.result_img);
 
         bt_back.setOnClickListener(new View.OnClickListener() {
             @Override

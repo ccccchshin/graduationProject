@@ -58,7 +58,7 @@ public class Search extends AppCompatActivity {
     Uri contentUri;
     LinearLayout ll;
     EditText keyword;
-    SocketClient client, client2;
+    SocketClient client;
     String json = "";
     String inputStr = "";
     Gson gson = new Gson();
@@ -95,9 +95,6 @@ public class Search extends AppCompatActivity {
 
         client = new SocketClient();
         client.start();
-
-        client2 = new SocketClient();
-        client2.start();
 
 //        sc = new SocketClient(this);
 
@@ -152,18 +149,7 @@ public class Search extends AppCompatActivity {
                 client.sendMessage(json);
 
                 keyword.getText().clear();
-//                try {
-//                    Log.v("yyy", "hello123");
-//                    client2.sendImgMsg(client2.dos);
-//                } catch (IOException e) {
-//                    throw new RuntimeException(e);
-//                }
-//                try {
-//                    keyword.setText(socket.getInputStream().toString());
-//                } catch (IOException e) {
-//                    Log.v("keyword", "0924");
-//                }
-//                keyword.setText();
+
                 // 文字 json/gson function1
                 // 圖片 串流 function2
 

@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     File photoFile, f;
     Long filelength;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

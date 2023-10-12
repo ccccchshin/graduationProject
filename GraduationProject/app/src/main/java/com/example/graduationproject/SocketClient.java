@@ -66,8 +66,7 @@ public class SocketClient extends Thread {
 
 
 //        file = new File("file:///storage/emulated/0/Pictures/JPEG_20230926_212305_1951428212526344974.jpg");
-        file = new File("/storage/emulated/0/Pictures/JPEG_20230926_144651_6448690246035440926.jpg");
-//        file = new File("\storage\emulated\0\Pictures\JPEG_20230926_212305_1951428212526344974.jpg");
+//        file = new File("/storage/emulated/0/Pictures/JPEG_20231012_194044_8277647551275343299.jpg");
 
 
         try {
@@ -77,8 +76,9 @@ public class SocketClient extends Thread {
             if (socket != null) {
                 dos = new DataOutputStream(socket.getOutputStream());
                 dis = new DataInputStream(socket.getInputStream());
-                fos = new FileOutputStream(file);
-                fis = new FileInputStream(file);
+//                fos = new FileOutputStream(file);
+//                fis = new FileInputStream(file);
+
 //                ois = new ObjectInputStream(socket.getInputStream());
 //                bytes = (byte[]) ois.readObject();
 //                ByteArrayOutputStream()
@@ -102,6 +102,7 @@ public class SocketClient extends Thread {
                     ft.start();
                 }
             }
+
         } catch (IOException e) {
 
 //        } catch (ClassNotFoundException e) {
