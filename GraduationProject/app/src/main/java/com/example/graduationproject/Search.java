@@ -132,6 +132,7 @@ public class Search extends AppCompatActivity {
 
                 // socket要傳文字&圖片
 //                JSONObject json = new JSONObject();
+
                 inputStr = keyword.getText().toString();
                 json = gson.toJson(inputStr);
 //                try {
