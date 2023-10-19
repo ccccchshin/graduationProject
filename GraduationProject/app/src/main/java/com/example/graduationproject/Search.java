@@ -207,7 +207,7 @@ public class Search extends AppCompatActivity {
                 Uri contentUri = data.getData();
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
-                Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
+//                Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
                 uri = contentUri;
                 f = new File(uri.toString());
                 filesize = f.length();

@@ -2,6 +2,7 @@ package com.example.graduationproject;
 
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.Log;
 
@@ -23,9 +24,12 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class FileTransfer extends Thread {
 
+    File backImg;
 //    DataInputStream dis;
 //    DataOutputStream dos;
 //
@@ -117,10 +121,19 @@ public class FileTransfer extends Thread {
             byte[] buffer = new byte[8192];
             try {
                 int count;
-                try (FileOutputStream fos = new FileOutputStream("server.jpg")) {
+                Log.v("1019", "check the length");
+                backImg = new File(createImageFile().getAbsolutePath());
+                File server_img = new File("/storage/emulated/0/Pictures/server.jpg");
+                Log.v("1019", "check the server_img");
+//                try (FileOutputStream fos = new FileOutputStream("server.jpg")) {
+//                try (FileOutputStream fos = new FileOutputStream(new File(getFilesDir(), "tours"))) {
+                try (FileOutputStream fos = new FileOutputStream(backImg)) {
+                    Log.v("1019", "check try");
                     while ((count = bis.read(buffer, 0, buffer.length)) > 0) {
+                        Log.v("1019", "check the while loop");
 //                    System.out.println("send to server");
                         fos.write(buffer, 0, count);
+                        Log.v("1019", "check the fos");
                     }
                     fos.close();
                     Log.v("SSS","Server file received");
@@ -128,7 +141,8 @@ public class FileTransfer extends Thread {
                 }
 
             } catch (Exception e) {
-                System.out.println("Exception!");
+                System.out.println(" receive exception!");
+                Log.v("1019",e.toString());
             } finally {
 
             }
@@ -140,6 +154,7 @@ public class FileTransfer extends Thread {
 
                 int count = 0;
                 byte[] buffer = new byte[8192]; // or 4096, or more
+
                 try (FileInputStream input = new FileInputStream("/storage/emulated/0/Pictures/JPEG_20231012_211316_514444503908695507.jpg")) {
                     while ((count = input.read(buffer, 0, buffer.length)) > 0) {
                         bos.write(buffer, 0, count); //寫入字串in輸出流
@@ -154,6 +169,25 @@ public class FileTransfer extends Thread {
                 System.out.println("read file error!");
             }
         }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPG_" + timeStamp + "_";
+//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+//        File dir = getExternalMediaDirs()[0];
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+
+        // Save a file: path for use with ACTION_VIEW intents
+//        currentPhotoPath = image.getAbsolutePath();
+        return image;
     }
 
 //        try {

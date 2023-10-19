@@ -22,6 +22,7 @@ public class Frag_search_result extends Fragment {
 
     MainActivity main;
     Search search;
+    FileTransfer ft;
     Frag_search frag_search = new Frag_search();
 
     Button bt_back, bt_home;
@@ -48,6 +49,10 @@ public class Frag_search_result extends Fragment {
         bt_back = v.findViewById(R.id.fra_bt_back);
         bt_home = v.findViewById(R.id.fra_bt_home);
         resultImg = v.findViewById(R.id.result_img);
+
+        String path = ft.backImg.getAbsolutePath();
+        Uri uri = Uri.parse(path);
+        resultImg.setImageURI(uri);
 
         bt_back.setOnClickListener(new View.OnClickListener() {
             @Override
