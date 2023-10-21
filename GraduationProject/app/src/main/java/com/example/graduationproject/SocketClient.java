@@ -28,32 +28,24 @@ import java.net.Socket;
 // AsyncTask<String, Void, Void>
 public class SocketClient extends Thread {
 
-    Search search;
     private Exception exception;
     Socket socket;
     DataInputStream dis;
     DataOutputStream dos;
-    FileInputStream fis;
-    FileOutputStream fos;
 
-    ObjectInputStream ois;
-
-    byte[] bytes;
 
     File file;
 
     MyHandler myHandler;
 
-
+    Search search;
     String host = "120.110.113.213";
     int port = 12345;
 
-    public SocketClient() {
+    public SocketClient(Search search) {
+        this.search = search;
     }
 
-    public SocketClient(Search s) {
-        search = (Search) s;
-    }
 
 
     @Override
@@ -65,10 +57,6 @@ public class SocketClient extends Thread {
         myHandler = new MyHandler();
 
 
-//        file = new File("file:///storage/emulated/0/Pictures/JPEG_20230926_212305_1951428212526344974.jpg");
-//        file = new File("/storage/emulated/0/Pictures/JPEG_20231012_194044_8277647551275343299.jpg");
-
-
         try {
             Log.v("CCC", "1005test22222");
             socket = new Socket(host, port);
@@ -76,44 +64,32 @@ public class SocketClient extends Thread {
             if (socket != null) {
                 dos = new DataOutputStream(socket.getOutputStream());
                 dis = new DataInputStream(socket.getInputStream());
-//                fos = new FileOutputStream(file);
-//                fis = new FileInputStream(file);
 
-//                ois = new ObjectInputStream(socket.getInputStream());
-//                bytes = (byte[]) ois.readObject();
-//                ByteArrayOutputStream()
             } else {
                 Log.v("CCC", "1005test");
             }
             while (true) {
                 String x = dis.readUTF();
-//                try {
-//                    Log.v("CCC", "1007");
-//                    x = dis.readUTF();
-//                    Log.v("CCC", "10088");
-//                }catch (Exception e){
-//                    Log.v("CCC", "can't get");
-//                }
                 Log.v("CCC", "msg from socket: " + x);
-//                if (x.equals("OK")) {
+
                 if (x != null) {
                     Log.v("CCC", "response from python server");
                     FileTransfer ft = new FileTransfer();
-                    ft.start();
+                    ft.run();
+//                    ft.join();
+                    Log.v("1021","path: "+ft.backimg_path);
+//                    search.frag_search_result.update();
+
+                    search.showresult(ft.backimg_path);
                 }
             }
 
         } catch (IOException e) {
 
-//        } catch (ClassNotFoundException e) {
-//            throw new RuntimeException(e);
-        }
-        finally {
+        } finally {
             try {
                 dos.close();
                 dis.close();
-                fos.close();
-                fis.close();
                 socket.close();
             } catch (IOException ioe) {
 
@@ -130,45 +106,6 @@ public class SocketClient extends Thread {
                 Log.v("CCC", "Send msg fail!");
             }
         }
-    }
-    public void sendImgMsg(DataOutputStream out) throws IOException {
-        Log.i("sendImg", "len: "+"1");
-        Bitmap bitmap = BitmapFactory.decodeStream(fis);
-//        Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(fis), R.drawable.search_icon);
-
-        Log.i("sendImg", "len: "+"2");
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-
-//        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, bout);
-//        Log.i("sendImg", "len: "+"3");
-
-        long len = bout.size();
-        Log.i("sendImg", "len: "+"4");
-        out.write(bout.toByteArray());
-    }
-
-    public void sendImage(){
-        byte[] sendbytes = new byte[1024];
-        int length = 0;
-        if (fos != null){
-            try {
-                while ((length = fis.read(sendbytes, 0, sendbytes.length)) > 0){
-                    dos.write(sendbytes, 0, length);
-                    dos.flush();
-                }
-            }catch (Exception e){
-                Log.v("CCC", "Send image fail!");
-            }
-        }
-
-
-//        if (fos != null){
-//            try {
-//                fos.write(bytes);
-//            }catch (Exception e){
-//                Log.v("CCC", "Send image fail!");
-//            }
-//        }
     }
 
 }

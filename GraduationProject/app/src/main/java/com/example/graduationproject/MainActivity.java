@@ -172,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent it = new Intent(MainActivity.this, Search.class);
                 it.putExtra("path", currentPhotoPath);
-                it.putExtra("size", filelength);
+//                it.putExtra("size", filelength);
                 startActivity(it);
 
             }

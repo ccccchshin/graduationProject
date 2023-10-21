@@ -93,18 +93,16 @@ public class Search extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        client = new SocketClient();
+        client = new SocketClient(this);
         client.start();
 
-//        sc = new SocketClient(this);
 
         frag_search = new Frag_search(this);
-        frag_search_result = new Frag_search_result(this);
-        main = new MainActivity();
+//        frag_search_result = new Frag_search_result(this);
 
         Intent it = getIntent();
         String str = it.getStringExtra("path");
-        filesize = it.getLongExtra("size", 0);
+//        filesize = it.getLongExtra("size", 0);
         uri = Uri.parse(str);
 
         load();
@@ -113,19 +111,15 @@ public class Search extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-                t.add(R.id.frame, frag_search_result).commit();
-
                 se_bt_photo.setVisibility(View.GONE);
                 se_bt_pic.setVisibility(View.GONE);
                 ll.setVisibility(View.GONE);
 
-                try{
-                    Log.v("CCC", Long.toString(filesize));
-                }catch (Exception e){
-                    Log.v("CCC", "not find flength");
-                }
-
+//                try{
+//                    Log.v("CCC", Long.toString(filesize));
+//                }catch (Exception e){
+//                    Log.v("CCC", "not find flength");
+//                }
 
 //                new SocketClient().execute(keyword.getText().toString());
 //                inputMessage.getText().clear();
@@ -151,8 +145,8 @@ public class Search extends AppCompatActivity {
 
                 keyword.getText().clear();
 
-                // 文字 json/gson function1
-                // 圖片 串流 function2
+//                FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+//                t.add(R.id.frame, frag_search_result).commit();
 
             }
         });
@@ -179,9 +173,7 @@ public class Search extends AppCompatActivity {
         });
 
     }
-//Long l;
-//String str = l.toString();
-//int finalsize = Integer.parseInt(str);
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -189,7 +181,7 @@ public class Search extends AppCompatActivity {
         if(requestCode == CAMERA_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 f = new File(se_currentPhotoPath);
-                filesize = f.length();
+//                filesize = f.length();
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 contentUri = Uri.fromFile(f);
@@ -197,7 +189,6 @@ public class Search extends AppCompatActivity {
                 this.sendBroadcast(mediaScanIntent);
 
                 frag_search.iv.setImageURI(uri);
-
 
             }
         }
@@ -210,7 +201,7 @@ public class Search extends AppCompatActivity {
 //                Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
                 uri = contentUri;
                 f = new File(uri.toString());
-                filesize = f.length();
+//                filesize = f.length();
                 frag_search.iv.setImageURI(uri);
 
             }
@@ -287,6 +278,21 @@ public class Search extends AppCompatActivity {
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
         t.replace(R.id.frame, frag_search).commit();
 
+    }
+
+    public void showresult(String path){
+        frag_search_result = new Frag_search_result(path);
+
+        Log.v("1021","frag_search_result: "+frag_search_result);
+        FragmentTransaction t = getSupportFragmentManager().beginTransaction();
+        t.replace(R.id.frame, frag_search_result).commit();
+        Log.v("1021","frag_search_result: "+frag_search_result);
+        Log.v("1021", "frag_search_result: resultImg: "+frag_search_result.resultImg);
+
+    }
+    public void showImg(String path){
+        Uri uri = Uri.parse(path);
+        frag_search_result.resultImg.setImageURI(uri);
     }
 
 }
