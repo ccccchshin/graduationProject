@@ -103,6 +103,7 @@ public class Search extends AppCompatActivity {
 
         Intent it = getIntent();
         file_path = it.getStringExtra("path");
+        Log.v("1024", "file_path: "+file_path);
         uri = Uri.parse(file_path);
 
         load();

@@ -73,7 +73,7 @@ public class SocketClient extends Thread {
 
                 if (x != null) {
                     Log.v("CCC", "response from python server");
-                    FileTransfer ft = new FileTransfer(search.file_path);
+                    FileTransfer ft = new FileTransfer(search.uri.toString());
                     ft.run();
                     Log.v("1021","path: "+ft.backimg_path);
 

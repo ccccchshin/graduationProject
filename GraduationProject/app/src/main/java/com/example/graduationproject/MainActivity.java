@@ -180,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == GALLERY_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 Uri contentUri = data.getData();
+                Log.v("1024", "gallery img: "+ contentUri.getPath());
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
@@ -187,6 +188,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent it = new Intent(MainActivity.this, Search.class);
                 it.putExtra("path", contentUri.toString());
+//                it.putExtra("path", "/storage/emulated/0/Pictures/"+imageFileName);
                 startActivity(it);
             }
         }
