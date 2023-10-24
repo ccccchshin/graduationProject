@@ -34,7 +34,6 @@ public class SocketClient extends Thread {
     DataOutputStream dos;
 
 
-    File file;
 
     MyHandler myHandler;
 
@@ -74,11 +73,9 @@ public class SocketClient extends Thread {
 
                 if (x != null) {
                     Log.v("CCC", "response from python server");
-                    FileTransfer ft = new FileTransfer();
+                    FileTransfer ft = new FileTransfer(search.file_path);
                     ft.run();
-//                    ft.join();
                     Log.v("1021","path: "+ft.backimg_path);
-//                    search.frag_search_result.update();
 
                     search.showresult(ft.backimg_path);
                 }

@@ -65,6 +65,8 @@ public class Search extends AppCompatActivity {
     Long filesize;
     Socket socket = new Socket();
 
+    String file_path;
+
     public Search(){
 
     }
@@ -98,12 +100,10 @@ public class Search extends AppCompatActivity {
 
 
         frag_search = new Frag_search(this);
-//        frag_search_result = new Frag_search_result(this);
 
         Intent it = getIntent();
-        String str = it.getStringExtra("path");
-//        filesize = it.getLongExtra("size", 0);
-        uri = Uri.parse(str);
+        file_path = it.getStringExtra("path");
+        uri = Uri.parse(file_path);
 
         load();
 
@@ -115,38 +115,15 @@ public class Search extends AppCompatActivity {
                 se_bt_pic.setVisibility(View.GONE);
                 ll.setVisibility(View.GONE);
 
-//                try{
-//                    Log.v("CCC", Long.toString(filesize));
-//                }catch (Exception e){
-//                    Log.v("CCC", "not find flength");
-//                }
-
-//                new SocketClient().execute(keyword.getText().toString());
-//                inputMessage.getText().clear();
-
-                // socket要傳文字&圖片
-//                JSONObject json = new JSONObject();
-
                 inputStr = keyword.getText().toString();
                 json = gson.toJson(inputStr);
-//                try {
-//                    json.put("search", inputStr);
-//                    json.put("file", "test.jpg");
-////                    int temp = Math.toIntExact(f.length());
-////                    String temp_string = Integer.toString(temp);
-////                    Log.v("sss", "len: " +temp_string);
-//                    Log.v("CCC", "json:" + json.toString());
-//                } catch (Exception e) {
-//
-//                }
 
                 Log.v("CCC", json.toString());
                 client.sendMessage(json);
 
                 keyword.getText().clear();
 
-//                FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-//                t.add(R.id.frame, frag_search_result).commit();
+
 
             }
         });
@@ -181,7 +158,6 @@ public class Search extends AppCompatActivity {
         if(requestCode == CAMERA_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 f = new File(se_currentPhotoPath);
-//                filesize = f.length();
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
                 contentUri = Uri.fromFile(f);
@@ -195,13 +171,11 @@ public class Search extends AppCompatActivity {
         // Gallery
         if(requestCode == GALLERY_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
-                Uri contentUri = data.getData();
+                Uri galleryUri = data.getData();
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-                String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
-//                Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
-                uri = contentUri;
+                String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(galleryUri);
+                uri = galleryUri;
                 f = new File(uri.toString());
-//                filesize = f.length();
                 frag_search.iv.setImageURI(uri);
 
             }
@@ -219,9 +193,7 @@ public class Search extends AppCompatActivity {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
-//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-//        File dir = getExternalMediaDirs()[0];
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */

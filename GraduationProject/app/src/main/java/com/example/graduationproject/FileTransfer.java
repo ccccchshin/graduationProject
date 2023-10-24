@@ -32,8 +32,12 @@ import java.util.Date;
 public class FileTransfer {
     File backImg;
     String backimg_path = "123";
+    String file_path;
     public FileTransfer(){
 
+    }
+    public FileTransfer(String path){
+        this.file_path = path;
     }
 
     public void run() {
@@ -60,7 +64,7 @@ public class FileTransfer {
                 dos = new DataOutputStream(socket.getOutputStream()); //給server送data
                 dis = new DataInputStream(socket.getInputStream()); //接收server送來的data
 
-                File file = new File("/storage/emulated/0/Pictures/JPEG_20231012_211316_514444503908695507.jpg");
+                File file = new File(file_path);
                 dos.writeUTF("" + file.length()); // 傳圖片長度給server
                 String server_string = dis.readUTF(); // 讀server傳進來的字串
                 System.out.println(server_string);
@@ -152,7 +156,9 @@ public class FileTransfer {
                 int count = 0;
                 byte[] buffer = new byte[8192]; // or 4096, or more
 
-                try (FileInputStream input = new FileInputStream("/storage/emulated/0/Pictures/JPEG_20231012_211316_514444503908695507.jpg")) {
+//                try (FileInputStream input = new FileInputStream("/storage/emulated/0/Pictures/JPEG_20231012_211316_514444503908695507.jpg")) {
+                try (FileInputStream input = new FileInputStream(file_path)) {
+
                     while ((count = input.read(buffer, 0, buffer.length)) > 0) {
                         bos.write(buffer, 0, count); //寫入字串in輸出流
                         bos.flush(); //把資料寫出給server，確保buffer乾淨
@@ -172,9 +178,7 @@ public class FileTransfer {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPG_" + timeStamp + "_";
-//        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-//        File dir = getExternalMediaDirs()[0];
         File image = File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
@@ -183,7 +187,6 @@ public class FileTransfer {
 
 
         // Save a file: path for use with ACTION_VIEW intents
-//        currentPhotoPath = image.getAbsolutePath();
         return image;
     }
 

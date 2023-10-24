@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 
 public class MyHandler extends Handler {
     Search search;
-    SocketClient socketClient;
 
     @Override
     public void handleMessage(@NonNull Message msg) {
