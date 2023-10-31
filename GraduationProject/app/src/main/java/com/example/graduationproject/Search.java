@@ -265,11 +265,11 @@ public class Search extends AppCompatActivity {
     }
 
     public void showresult(String path){
-        frag_search_result = new Frag_search_result(path);
+        frag_search_result = new Frag_search_result(this, path);
 
         Log.v("1021","frag_search_result: "+frag_search_result);
         FragmentTransaction t = getSupportFragmentManager().beginTransaction();
-        t.replace(R.id.frame, frag_search_result).commit();
+        t.add(R.id.frame, frag_search_result).commit();
         Log.v("1021","frag_search_result: "+frag_search_result);
         Log.v("1021", "frag_search_result: resultImg: "+frag_search_result.resultImg);
 

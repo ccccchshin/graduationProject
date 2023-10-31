@@ -30,7 +30,8 @@ public class Frag_search_result extends Fragment {
     String path;
 
 
-    public Frag_search_result(String s_) {
+    public Frag_search_result(Search search, String s_) {
+        this.search = search;
         path = s_;
     }
 
