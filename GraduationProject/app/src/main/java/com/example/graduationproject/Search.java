@@ -9,11 +9,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.loader.content.CursorLoader;
 
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -124,8 +126,6 @@ public class Search extends AppCompatActivity {
 
                 keyword.getText().clear();
 
-
-
             }
         });
         se_bt_photo.setOnClickListener(new View.OnClickListener() {
@@ -173,15 +173,27 @@ public class Search extends AppCompatActivity {
         if(requestCode == GALLERY_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 Uri galleryUri = data.getData();
+                getRealPathFromURI(galleryUri);
+                Log.v("1026", "getRealPathFromURI in search: "+ getRealPathFromURI(galleryUri));
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(galleryUri);
-                uri = galleryUri;
+                uri = Uri.parse(getRealPathFromURI(galleryUri));
                 f = new File(uri.toString());
                 frag_search.iv.setImageURI(uri);
 
             }
         }
 
+    }
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(this, contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
 
     private String getFileExt(Uri contentUri) {
@@ -233,7 +245,6 @@ public class Search extends AppCompatActivity {
 
                 Log.v("sss", "ok" );
                 Log.v("CCC", "photoURI:" + photoURI.toString());
-
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
                 startActivityForResult(takePictureIntent, CAMERA_REQUEST_CODE);

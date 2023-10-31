@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -33,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+import androidx.loader.content.CursorLoader;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -91,13 +93,16 @@ public class MainActivity extends AppCompatActivity {
 
         // 相簿
         bt_pic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            @Override //Environment.DIRECTORY_PICTURES
+            public void onClick(View v) { //Media.EXTERNAL_CONTENT_URI
                 Intent gallery = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(gallery, GALLERY_REQUEST_CODE);
             }
         });
-
+//        receive_file()
+//        detect()
+//        send_file()
+//        os.system('detect.py')
     }
 
     //存取權安全性驗證
@@ -180,6 +185,8 @@ public class MainActivity extends AppCompatActivity {
         if(requestCode == GALLERY_REQUEST_CODE){
             if(resultCode == Activity.RESULT_OK){
                 Uri contentUri = data.getData();
+                getRealPathFromURI(contentUri);
+                Log.v("1026", "getRealPathFromURI: "+getRealPathFromURI(contentUri));
                 Log.v("1024", "gallery img: "+ contentUri.getPath());
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
@@ -187,11 +194,22 @@ public class MainActivity extends AppCompatActivity {
                 displayImg.setImageURI(contentUri);
 
                 Intent it = new Intent(MainActivity.this, Search.class);
-                it.putExtra("path", contentUri.toString());
+                it.putExtra("path", getRealPathFromURI(contentUri));
 //                it.putExtra("path", "/storage/emulated/0/Pictures/"+imageFileName);
                 startActivity(it);
             }
         }
+
+    }
+    private String getRealPathFromURI(Uri contentUri) {
+        String[] proj = { MediaStore.Images.Media.DATA };
+        CursorLoader loader = new CursorLoader(this, contentUri, proj, null, null, null);
+        Cursor cursor = loader.loadInBackground();
+        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+        cursor.moveToFirst();
+        String result = cursor.getString(column_index);
+        cursor.close();
+        return result;
     }
     private String getFileExt(Uri contentUri) {
         ContentResolver c = getContentResolver();

@@ -62,8 +62,7 @@ public class Frag_search_result extends Fragment {
             public void onClick(View v) {
 //                search.load();
 
-                FragmentManager fm = getFragmentManager();
-                FragmentTransaction ft = fm.beginTransaction();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.remove(search.frag_search_result).commit();
 
                 search.ll.setVisibility(View.VISIBLE);
