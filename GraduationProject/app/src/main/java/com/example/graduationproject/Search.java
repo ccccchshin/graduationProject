@@ -65,7 +65,6 @@ public class Search extends AppCompatActivity {
     String inputStr = "";
     Gson gson = new Gson();
     Long filesize;
-    Socket socket = new Socket();
 
     String file_path;
 
@@ -97,8 +96,7 @@ public class Search extends AppCompatActivity {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        client = new SocketClient(this);
-        client.start();
+
 
 
         frag_search = new Frag_search(this);
@@ -122,6 +120,11 @@ public class Search extends AppCompatActivity {
                 json = gson.toJson(inputStr);
 
                 Log.v("CCC", json.toString());
+
+                client = new SocketClient(Search.this);
+                client.start();
+                while (!client.ready) {
+                }
                 client.sendMessage(json);
 
                 keyword.getText().clear();

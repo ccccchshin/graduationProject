@@ -68,7 +68,7 @@ public class FileTransfer {
                 dos.writeUTF("" + file.length()); // 傳圖片長度給server
                 String server_string = dis.readUTF(); // 讀server傳進來的字串
                 System.out.println(server_string);
-
+                Thread.sleep(1000);
             } catch (Exception e) {
                 System.out.println("Socket Error!");
             } finally {
@@ -76,6 +76,7 @@ public class FileTransfer {
                     dos.close();
                     dis.close();
                     socket.close();
+                    Thread.sleep(1000);
                 } catch (Exception e) {
                     System.out.println("finally error!");
                 }
@@ -98,6 +99,7 @@ public class FileTransfer {
                 bos = new BufferedOutputStream(socket.getOutputStream());//給server送data
                 bis = new BufferedInputStream(socket.getInputStream());//接收server送來的data
 
+
                 send_file();
                 Thread.sleep(1000);
                 receive_file();
@@ -107,6 +109,7 @@ public class FileTransfer {
                 System.out.println("Socket Error!");
             } finally {
                 try {
+                    Thread.sleep(1000);
                     bos.close();
                     bis.close();
                     socket.close();
@@ -120,27 +123,28 @@ public class FileTransfer {
             byte[] buffer = new byte[8192];
             try {
                 int count;
-                Log.v("1019", "check the length");
+//                Log.v("1019", "check the length");
                 backImg = new File(createImageFile().getAbsolutePath());
                 backimg_path = backImg.getAbsolutePath();
                 Log.v("1021", backImg.getAbsolutePath());
 
-                File server_img = new File("/storage/emulated/0/Pictures/server.jpg");
-                Log.v("1019", "check the server_img");
+//                File server_img = new File("/storage/emulated/0/Pictures/server.jpg");
+//                Log.v("1019", "check the server_img");
 
                 try (FileOutputStream fos = new FileOutputStream(backImg)) {
-                    Log.v("1019", "check try");
+//                    Log.v("1019", "check try");
                     while ((count = bis.read(buffer, 0, buffer.length)) > 0) {
-                        Log.v("1019", "check the while loop");
+//                        Log.v("1019", "check the while loop");
 //                    System.out.println("send to server");
                         fos.write(buffer, 0, count);
-                        Log.v("1019", "check the fos");
+//                        Log.v("1019", "check the fos");
                     }
+                    Thread.sleep(500);
                     fos.close();
                     Log.v("SSS","Server file received");
                     System.out.println("Server file received");
                 }
-
+                Thread.sleep(1000);
             } catch (Exception e) {
                 System.out.println(" receive exception!");
                 Log.v("1019",e.toString());
@@ -163,6 +167,7 @@ public class FileTransfer {
                         bos.write(buffer, 0, count); //寫入字串in輸出流
                         bos.flush(); //把資料寫出給server，確保buffer乾淨
                     }
+                    Thread.sleep(500);
                     input.close();
                 }
                 Thread.sleep(500);

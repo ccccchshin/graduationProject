@@ -27,6 +27,7 @@ import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -74,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         search = new Search(this);
 
+        bt_pho.setBackgroundColor(getResources().getColor(R.color.baby_blue));
         // 相機
         bt_pho.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,10 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivityForResult(gallery, GALLERY_REQUEST_CODE);
             }
         });
-//        receive_file()
-//        detect()
-//        send_file()
-//        os.system('detect.py')
+
     }
 
     //存取權安全性驗證
@@ -165,7 +164,6 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 f = new File(currentPhotoPath);
 
-                displayImg.setImageURI(Uri.fromFile(f));
                 Log.d("tag", "ABsolute Url of Image is " + Uri.fromFile(f));
 
                 Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
@@ -176,9 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent it = new Intent(MainActivity.this, Search.class);
                 it.putExtra("path", currentPhotoPath);
-//                it.putExtra("size", filelength);
                 startActivity(it);
-
             }
         }
         // Gallery
@@ -186,12 +182,12 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 Uri contentUri = data.getData();
                 getRealPathFromURI(contentUri);
-                Log.v("1026", "getRealPathFromURI: "+getRealPathFromURI(contentUri));
-                Log.v("1024", "gallery img: "+ contentUri.getPath());
+//                Log.v("1026", "getRealPathFromURI: "+getRealPathFromURI(contentUri));
+//                Log.v("1024", "gallery img: "+ contentUri.getPath());
                 String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
                 String imageFileName = "JPEG_" + timeStamp +"."+getFileExt(contentUri);
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
-                displayImg.setImageURI(contentUri);
+//                displayImg.setImageURI(contentUri);
 
                 Intent it = new Intent(MainActivity.this, Search.class);
                 it.putExtra("path", getRealPathFromURI(contentUri));
@@ -227,8 +223,6 @@ public class MainActivity extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-
         // Save a file: path for use with ACTION_VIEW intents
         currentPhotoPath = image.getAbsolutePath();
         return image;

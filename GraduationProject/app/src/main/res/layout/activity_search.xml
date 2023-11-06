@@ -10,8 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="@color/light_blue">
-<!--        android:layout_weight="8">-->
+        android:background="@color/baby_blue">
 
     </LinearLayout>
 
@@ -51,7 +50,6 @@
 
         <LinearLayout
             android:id="@+id/searchlayout"
-            android:background="@color/black"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -62,6 +60,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:text="拍照"
+                android:textSize="25dp"
                 android:background="@drawable/button_shape"/>
             <Button
                 android:id="@+id/se_bt_picture"
@@ -69,6 +68,7 @@
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:text="圖片"
+                android:textSize="25dp"
                 android:background="@drawable/button_shape"/>
         </LinearLayout>
 

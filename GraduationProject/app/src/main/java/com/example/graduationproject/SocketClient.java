@@ -34,17 +34,16 @@ public class SocketClient extends Thread {
     DataOutputStream dos;
 
 
-
     MyHandler myHandler;
 
     Search search;
     String host = "120.110.113.213";
     int port = 12345;
+    Boolean ready = false;
 
     public SocketClient(Search search) {
         this.search = search;
     }
-
 
 
     @Override
@@ -55,36 +54,38 @@ public class SocketClient extends Thread {
 
         myHandler = new MyHandler();
 
-
         try {
-            Log.v("CCC", "1005test22222");
             socket = new Socket(host, port);
-            Log.v("CCC", "1005test123456");
             if (socket != null) {
                 dos = new DataOutputStream(socket.getOutputStream());
                 dis = new DataInputStream(socket.getInputStream());
+                ready = true;
 
             } else {
-                Log.v("CCC", "1005test");
+
             }
-            while (true) {
-                String x = dis.readUTF();
-                Log.v("CCC", "msg from socket: " + x);
+            String x = "";
+            while (!x.equals("ok")) {
+                x = dis.readUTF();
+            }
+            Log.v("CCC", "msg from socket: " + x);
 
-                if (x != null) {
-                    Log.v("CCC", "response from python server");
-                    FileTransfer ft = new FileTransfer(search.uri.toString());
-                    ft.run();
-                    Log.v("1021","path: "+ft.backimg_path);
+            if (x != null) {
+                sendMessage("ok");
+                Log.v("CCC", "response from python server");
+                FileTransfer ft = new FileTransfer(search.uri.toString());
+                ft.run();
+                Log.v("1021", "path: " + ft.backimg_path);
 
-                    search.showresult(ft.backimg_path);
-                }
+                search.showresult(ft.backimg_path);
+
             }
 
         } catch (IOException e) {
 
         } finally {
             try {
+
                 dos.close();
                 dis.close();
                 socket.close();
@@ -98,7 +99,9 @@ public class SocketClient extends Thread {
     public void sendMessage(String str) {
         if (dos != null) {
             try {
+                Log.v("CCC", "Send msg!");
                 dos.writeUTF(str);
+//                Thread.sleep(1000);
             } catch (Exception e) {
                 Log.v("CCC", "Send msg fail!");
             }
