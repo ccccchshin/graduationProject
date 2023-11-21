@@ -75,7 +75,8 @@ public class MainActivity extends AppCompatActivity {
 
         search = new Search(this);
 
-        bt_pho.setBackgroundColor(getResources().getColor(R.color.baby_blue));
+//        bt_pho.setBackgroundColor(getResources().getColor(R.color.baby_blue));
+//        bt_pic.setBackground(getResources().getDrawable(R.drawable.button_shape));
         // 相機
         bt_pho.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -27,7 +27,8 @@
             android:layout_height="100dp"
             android:textSize="25dp"
             android:text="圖片"
-            android:background="@color/baby_blue"/>
+            android:backgroundTint="@color/baby_blue"
+            android:background="@drawable/button_shape"/>
     </LinearLayout>
     <ImageView
         android:id="@+id/img"

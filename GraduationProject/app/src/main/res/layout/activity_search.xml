@@ -50,11 +50,12 @@
 
         <LinearLayout
             android:id="@+id/searchlayout"
+            android:background="@color/baby_blue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_weight="6">
+            android:layout_weight="5">
             <Button
                 android:id="@+id/se_bt_photo"
                 android:layout_width="100dp"
