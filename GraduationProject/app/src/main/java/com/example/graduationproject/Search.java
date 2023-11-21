@@ -62,7 +62,7 @@ public class Search extends AppCompatActivity {
     EditText keyword;
     SocketClient client;
     String json = "";
-    String inputStr = "";
+    String inputStr = "", search_keyword;
     Gson gson = new Gson();
     Long filesize;
 
@@ -103,10 +103,13 @@ public class Search extends AppCompatActivity {
 
         Intent it = getIntent();
         file_path = it.getStringExtra("path");
+        search_keyword = it.getStringExtra("keyword");
         Log.v("1024", "file_path: "+file_path);
         uri = Uri.parse(file_path);
 
         load();
+
+        keyword.setText(search_keyword);
 
         iv_search.setOnClickListener(new View.OnClickListener() {
             @Override

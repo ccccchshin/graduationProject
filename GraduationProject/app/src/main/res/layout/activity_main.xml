@@ -8,11 +8,20 @@
     android:padding="20dp"
     tools:context=".MainActivity">
 
+    <EditText
+        android:id="@+id/main_et"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:hint="請輸入關鍵字"
+        android:gravity="center"
+        android:textSize="30dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginTop="30dp">
         <Button
             android:id="@+id/bt_photo"
             android:layout_width="100dp"
@@ -30,11 +39,11 @@
             android:backgroundTint="@color/baby_blue"
             android:background="@drawable/button_shape"/>
     </LinearLayout>
-    <ImageView
-        android:id="@+id/img"
-        android:layout_marginTop="20dp"
-        android:layout_width="300dp"
-        android:layout_height="300dp"/>
+<!--    <ImageView-->
+<!--        android:id="@+id/img"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:layout_width="300dp"-->
+<!--        android:layout_height="300dp"/>-->
 
 
 

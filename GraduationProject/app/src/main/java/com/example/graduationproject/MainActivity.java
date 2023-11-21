@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -52,15 +53,13 @@ public class MainActivity extends AppCompatActivity {
 
 
     Button bt_pho, bt_pic;
-    ImageView displayImg;
     String currentPhotoPath;
 
     Search search;
 
-    String answer = "yesyes";
-
     File photoFile, f;
     Long filelength;
+    EditText main_et;
 
 
     @Override
@@ -71,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
         bt_pho = findViewById(R.id.bt_photo);
         bt_pic = findViewById(R.id.bt_picture);
 
-        displayImg = findViewById(R.id.img);
+        main_et = findViewById(R.id.main_et);
 
         search = new Search(this);
 
@@ -175,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent it = new Intent(MainActivity.this, Search.class);
                 it.putExtra("path", currentPhotoPath);
+                it.putExtra("keyword", main_et.getText().toString());
                 startActivity(it);
             }
         }
@@ -192,6 +192,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Intent it = new Intent(MainActivity.this, Search.class);
                 it.putExtra("path", getRealPathFromURI(contentUri));
+                it.putExtra("keyword", main_et.getText().toString());
 //                it.putExtra("path", "/storage/emulated/0/Pictures/"+imageFileName);
                 startActivity(it);
             }
