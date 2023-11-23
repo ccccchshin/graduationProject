@@ -55,7 +55,7 @@ public class FileTransfer {
         Socket socket = null;
         DataOutputStream dos = null;
         DataInputStream dis = null;
-        String host = "120.110.113.213";
+        String host = "120.110.113.204";
 
         public void run() {
             try {
@@ -89,7 +89,7 @@ public class FileTransfer {
         Socket socket = null;
         BufferedOutputStream bos = null;
         BufferedInputStream bis = null;
-        String host = "120.110.113.213";
+        String host = "120.110.113.204";
 
 
         public void run() {

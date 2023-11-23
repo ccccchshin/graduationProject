@@ -37,7 +37,7 @@ public class SocketClient extends Thread {
     MyHandler myHandler;
 
     Search search;
-    String host = "120.110.113.213";
+    String host = "120.110.113.204";
     int port = 12345;
     Boolean ready = false;
 
