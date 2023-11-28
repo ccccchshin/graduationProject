@@ -25,7 +25,7 @@ public class Frag_search_result extends Fragment {
 
     Search search;
 
-    Button bt_back, bt_home;
+    Button bt_back, bt_home, bt_chat;
     ImageView resultImg;
     String path;
 
@@ -50,6 +50,7 @@ public class Frag_search_result extends Fragment {
 
         bt_back = v.findViewById(R.id.fra_bt_back);
         bt_home = v.findViewById(R.id.fra_bt_home);
+        bt_chat = v.findViewById(R.id.fra_bt_chat);
         resultImg = v.findViewById(R.id.result_img);
 
         Uri uri = Uri.parse(path);
@@ -70,6 +71,13 @@ public class Frag_search_result extends Fragment {
                 search.se_bt_photo.setVisibility(View.VISIBLE);
                 search.se_bt_pic.setVisibility(View.VISIBLE);
 
+            }
+        });
+        bt_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent it = new Intent(search, Chatbox.class);
+                startActivity(it);
             }
         });
         bt_home.setOnClickListener(new View.OnClickListener() {
