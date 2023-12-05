@@ -34,6 +34,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -115,6 +116,7 @@ public class Search extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Toast.makeText(getBaseContext(), "處理中..", Toast.LENGTH_LONG).show();
                 se_bt_photo.setVisibility(View.GONE);
                 se_bt_pic.setVisibility(View.GONE);
                 ll.setVisibility(View.GONE);
@@ -131,6 +133,7 @@ public class Search extends AppCompatActivity {
                 client.sendMessage(json);
 
                 keyword.getText().clear();
+
 
             }
         });
@@ -280,9 +283,9 @@ public class Search extends AppCompatActivity {
         Log.v("1021", "frag_search_result: resultImg: "+frag_search_result.resultImg);
 
     }
-    public void showImg(String path){
-        Uri uri = Uri.parse(path);
-        frag_search_result.resultImg.setImageURI(uri);
-    }
+//    String OCRstr;
+//    public void StrfromOCR(String str){
+//        OCRstr = str;
+//    }
 
 }

@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int GALLERY_REQUEST_CODE = 105;
 
 
-    Button bt_pho, bt_pic;
+    Button bt_pho, bt_pic, bt_ctrl,bt_chat;
     String currentPhotoPath;
 
     Search search;
@@ -61,6 +61,8 @@ public class MainActivity extends AppCompatActivity {
     Long filelength;
     EditText main_et;
 
+    int count1 = 0, count2 = 0;
+    int mode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,10 +71,72 @@ public class MainActivity extends AppCompatActivity {
 
         bt_pho = findViewById(R.id.bt_photo);
         bt_pic = findViewById(R.id.bt_picture);
+        bt_ctrl = findViewById(R.id.mode_CF);
+        bt_chat = findViewById(R.id.mode_Chat);
 
         main_et = findViewById(R.id.main_et);
 
         search = new Search(this);
+
+
+        main_et.setVisibility(View.INVISIBLE);
+        bt_pho.setVisibility(View.INVISIBLE);
+        bt_pic.setVisibility(View.INVISIBLE);
+
+
+        bt_ctrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                if(main_et.getVisibility() == View.VISIBLE) {
+//                    main_et.setVisibility(View.INVISIBLE);
+//                    bt_pho.setVisibility(View.INVISIBLE);
+//                    bt_pic.setVisibility(View.INVISIBLE);
+//                    Toast.makeText(getBaseContext(), "按鈕已收起", Toast.LENGTH_SHORT).show();
+//
+//                }else{
+//                    main_et.setVisibility(View.VISIBLE);
+//                    bt_pho.setVisibility(View.VISIBLE);
+//                    bt_pic.setVisibility(View.VISIBLE);
+//                    Toast.makeText(getBaseContext(), "Ctrl+F 模式", Toast.LENGTH_SHORT).show();
+//                }
+                mode = 0;
+                count2 = 0;
+                if(count1 == 0) {
+                    main_et.setVisibility(View.VISIBLE);
+                    bt_pho.setVisibility(View.VISIBLE);
+                    bt_pic.setVisibility(View.VISIBLE);
+                    Toast.makeText(getBaseContext(), "Ctrl+F 模式", Toast.LENGTH_SHORT).show();
+                    count1 = 1;
+                }else{
+                    main_et.setVisibility(View.INVISIBLE);
+                    bt_pho.setVisibility(View.INVISIBLE);
+                    bt_pic.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getBaseContext(), "按鈕已收起", Toast.LENGTH_SHORT).show();
+                    count1 = 0;
+                }
+            }
+        });
+
+        bt_chat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mode = 1;
+                count1 = 0;
+                if(count2 == 0) {
+                    main_et.setVisibility(View.INVISIBLE);
+                    bt_pho.setVisibility(View.VISIBLE);
+                    bt_pic.setVisibility(View.VISIBLE);
+                    Toast.makeText(getBaseContext(), "ChatGPT 模式", Toast.LENGTH_SHORT).show();
+                    count2 = 1;
+                }else {
+                    bt_pho.setVisibility(View.INVISIBLE);
+                    bt_pic.setVisibility(View.INVISIBLE);
+                    Toast.makeText(getBaseContext(), "按鈕已收起", Toast.LENGTH_SHORT).show();
+                    count2 = 0;
+                }
+            }
+        });
+
 
 //        bt_pho.setBackgroundColor(getResources().getColor(R.color.baby_blue));
 //        bt_pic.setBackground(getResources().getDrawable(R.drawable.button_shape));
@@ -172,10 +236,16 @@ public class MainActivity extends AppCompatActivity {
                 this.sendBroadcast(mediaScanIntent);
                 filelength = f.length();
 
-                Intent it = new Intent(MainActivity.this, Search.class);
-                it.putExtra("path", currentPhotoPath);
-                it.putExtra("keyword", main_et.getText().toString());
-                startActivity(it);
+                if(mode == 0) {
+                    Intent it = new Intent(MainActivity.this, Search.class);
+                    it.putExtra("path", currentPhotoPath);
+                    it.putExtra("keyword", main_et.getText().toString());
+                    startActivity(it);
+                }else{
+                    Intent it = new Intent(MainActivity.this, Search_chat.class);
+                    it.putExtra("path", currentPhotoPath);
+                    startActivity(it);
+                }
             }
         }
         // Gallery
@@ -190,11 +260,17 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("tag", "onActivityResult: Gallery Image Uri:  " +  imageFileName);
 //                displayImg.setImageURI(contentUri);
 
-                Intent it = new Intent(MainActivity.this, Search.class);
-                it.putExtra("path", getRealPathFromURI(contentUri));
-                it.putExtra("keyword", main_et.getText().toString());
+                if(mode == 0) {
+                    Intent it = new Intent(MainActivity.this, Search.class);
+                    it.putExtra("path", getRealPathFromURI(contentUri));
+                    it.putExtra("keyword", main_et.getText().toString());
 //                it.putExtra("path", "/storage/emulated/0/Pictures/"+imageFileName);
-                startActivity(it);
+                    startActivity(it);
+                }else{
+                    Intent it = new Intent(MainActivity.this, Search_chat.class);
+                    it.putExtra("path", getRealPathFromURI(contentUri));
+                    startActivity(it);
+                }
             }
         }
 

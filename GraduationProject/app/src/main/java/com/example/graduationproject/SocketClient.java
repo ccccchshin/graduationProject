@@ -77,6 +77,8 @@ public class SocketClient extends Thread {
                 ft.run();
                 Log.v("1021", "path: " + ft.backimg_path);
 
+//                String str = dis.readUTF()??;
+//                search.StrfromOCR(str);
                 search.showresult(ft.backimg_path);
 
             }

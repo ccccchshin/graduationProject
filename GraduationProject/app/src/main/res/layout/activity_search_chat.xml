@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".Search">
+    tools:context=".Search_chat">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,32 +25,37 @@
             android:layout_height="60dp"
             android:layout_margin="10dp"
             android:orientation="horizontal">
-<!--            android:layout_weight="6">-->
-            <EditText
-                android:id="@+id/keyword"
+            <TextView
+                android:id="@+id/chse_hint"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
+                android:textAlignment="center"
+                android:hint="以下為所選的圖片"
                 android:textSize="30dp"
                 android:layout_weight="1" />
             <ImageView
-                android:id="@+id/iv_search"
+                android:id="@+id/iv_chat_search"
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
                 android:scaleType="fitXY"/>
         </LinearLayout>
 
-        <FrameLayout
-            android:id="@+id/frame"
+        <ImageView
+            android:id="@+id/chat_img"
             android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_gravity="center"
             android:layout_weight="2">
 
-        </FrameLayout>
+        </ImageView>
 
         <LinearLayout
-            android:id="@+id/searchlayout"
+            android:id="@+id/chat_searchlayout"
             android:background="@color/baby_blue"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -58,14 +63,14 @@
             android:gravity="center"
             android:layout_weight="5">
             <Button
-                android:id="@+id/se_bt_photo"
+                android:id="@+id/chse_pho"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:text="拍照"
                 android:textSize="25dp"
                 android:background="@drawable/button_shape"/>
             <Button
-                android:id="@+id/se_bt_picture"
+                android:id="@+id/chse_pic"
                 android:layout_marginLeft="40dp"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
@@ -74,21 +79,7 @@
                 android:background="@drawable/button_shape"/>
         </LinearLayout>
 
-<!--    <Button-->
-<!--        android:id="@+id/se_bt_photo"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:background="@drawable/button_shape"-->
-<!--        android:text="拍照" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/se_bt_picture"-->
-<!--        android:layout_width="100dp"-->
-<!--        android:layout_height="100dp"-->
-<!--        android:layout_marginLeft="40dp"-->
-<!--        android:background="@drawable/button_shape"-->
-<!--        android:text="圖片" />-->
-        </LinearLayout>
+    </LinearLayout>
 
 
 
