@@ -19,7 +19,7 @@ public class HttpRequest {
         OkHttpClient client = new OkHttpClient()
                 .newBuilder()
                 .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(20, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BASIC))
                 .build();
 
