@@ -63,22 +63,22 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <ScrollView-->
-<!--        android:layout_width="0dp"-->
-<!--        android:layout_height="0dp"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/textView_Title"-->
-<!--        app:layout_constraintBottom_toTopOf="@+id/guideline3"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/guideline2"-->
-<!--        app:layout_constraintStart_toStartOf="parent">-->
+    <!--    <ScrollView-->
+    <!--        android:layout_width="0dp"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        app:layout_constraintTop_toBottomOf="@+id/textView_Title"-->
+    <!--        app:layout_constraintBottom_toTopOf="@+id/guideline3"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/guideline2"-->
+    <!--        app:layout_constraintStart_toStartOf="parent">-->
 
-<!--        <TextView-->
-<!--            android:id="@+id/textView_Question"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="TextView"-->
-<!--            android:scrollbars="vertical"-->
-<!--            android:scrollbarStyle="insideOverlay"/>-->
-<!--    </ScrollView>-->
+    <!--        <TextView-->
+    <!--            android:id="@+id/textView_Question"-->
+    <!--            android:layout_width="match_parent"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:text="TextView"-->
+    <!--            android:scrollbars="vertical"-->
+    <!--            android:scrollbarStyle="insideOverlay"/>-->
+    <!--    </ScrollView>-->
 
     <TextView
         android:id="@+id/textView_Question"

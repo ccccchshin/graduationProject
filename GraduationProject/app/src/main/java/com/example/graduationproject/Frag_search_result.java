@@ -101,7 +101,7 @@ public class Frag_search_result extends Fragment {
 
     }
 
-//    public boolean onTouchEvent(MotionEvent event){
+    //    public boolean onTouchEvent(MotionEvent event){
 //        scaleGestureDetector.onTouchEvent(event);
 //        return true;
 //    }

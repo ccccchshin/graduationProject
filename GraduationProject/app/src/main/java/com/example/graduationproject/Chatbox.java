@@ -28,7 +28,7 @@ import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
 public class Chatbox extends AppCompatActivity {
-    public static final String API_KEY = "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";
+    public static final String API_KEY = "";
     public static final String URL = "https://api.openai.com/v1/completions";
 //    public static final String URL = "https://api.openai.com/v1/chat/completions";
 
