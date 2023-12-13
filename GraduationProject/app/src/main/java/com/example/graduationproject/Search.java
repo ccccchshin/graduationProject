@@ -120,6 +120,7 @@ public class Search extends AppCompatActivity {
                 se_bt_photo.setVisibility(View.GONE);
                 se_bt_pic.setVisibility(View.GONE);
                 ll.setVisibility(View.GONE);
+                frag_search.iv.setVisibility(View.INVISIBLE);
 
                 inputStr = keyword.getText().toString();
                 json = gson.toJson(inputStr);

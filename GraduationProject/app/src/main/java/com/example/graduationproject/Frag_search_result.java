@@ -13,6 +13,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -28,6 +30,10 @@ public class Frag_search_result extends Fragment {
     Button bt_back, bt_home, bt_chat;
     ImageView resultImg;
     String path;
+
+    ScaleGestureDetector scaleGestureDetector;
+    float scaleFactor = 1.0f;
+    float focusX, focusY;
 
 
     public Frag_search_result(Search search, String s_) {
@@ -57,6 +63,16 @@ public class Frag_search_result extends Fragment {
 
         Log.v("1021", "onCreateview: resultImg : "+resultImg);
 
+        scaleGestureDetector = new ScaleGestureDetector(requireContext(), new ScaleListener());
+        resultImg.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                scaleGestureDetector.onTouchEvent(event);
+                focusX = scaleGestureDetector.getFocusX();
+                focusY = scaleGestureDetector.getFocusY();
+                return true;
+            }
+        });
 
         bt_back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,6 +99,33 @@ public class Frag_search_result extends Fragment {
 
         return v;
 
+    }
+
+//    public boolean onTouchEvent(MotionEvent event){
+//        scaleGestureDetector.onTouchEvent(event);
+//        return true;
+//    }
+//
+    private class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+        @Override
+        public boolean onScale(ScaleGestureDetector detector) {
+            scaleFactor *= detector.getScaleFactor();
+            scaleFactor = Math.max(0.1f, Math.min(scaleFactor, 5.0f)); // 控制縮放的範圍
+
+            // 計算放大縮小時的焦點位置偏移
+            float offsetX = (1 - detector.getScaleFactor()) * focusX;
+            float offsetY = (1 - detector.getScaleFactor()) * focusY;
+//            float offsetX = detector.getScaleFactor()* focusX;
+//            float offsetY = detector.getScaleFactor() * focusY;
+
+            // 設置圖片的縮放和偏移
+            resultImg.setScaleX(scaleFactor);
+            resultImg.setScaleY(scaleFactor);
+            resultImg.setTranslationX(offsetX);
+            resultImg.setTranslationY(offsetY);
+
+            return true;
+        }
     }
 
 }

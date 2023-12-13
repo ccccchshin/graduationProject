@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:ems="10"
-        android:text="抓這段重點"
+        android:text="抓約30字的條列式重點"
         android:hint="Input message "
         android:inputType="text"
         android:minHeight="48dp"
@@ -46,6 +46,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="送出"
+        android:textSize="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="@+id/guideline" />
@@ -84,6 +85,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:text="TextView"
+        android:textSize="18dp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/guideline3"
         app:layout_constraintEnd_toEndOf="@+id/guideline2"
@@ -97,6 +99,7 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="返回"
+        android:textSize="17dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
         app:layout_constraintTop_toTopOf="parent"/>
@@ -136,6 +139,7 @@
                 android:id="@+id/textView_Answer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:textSize="18dp"
                 android:text="TextView" />
         </LinearLayout>
     </ScrollView>
